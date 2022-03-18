@@ -1,38 +1,18 @@
 import {
-  IsEmail,
-  IsEnum,
   IsNotEmpty,
   IsNumberString,
-  IsOptional,
   IsPhoneNumber,
   IsString,
   Length,
   Matches,
 } from 'class-validator';
-import { RoleBase } from '../enums/role.enum';
 
-export class CreateUserDto {
-  @IsNotEmpty()
-  @Length(2, 50)
-  @IsString()
-  firstName: string;
-
-  @IsNotEmpty()
-  @Length(2, 50)
-  @IsString()
-  lastName: string;
-
+export class LoginUserDto {
   @IsNotEmpty()
   @IsString()
   @IsNumberString()
   @IsPhoneNumber('BD')
   phone: string;
-
-  @IsOptional()
-  @Length(5, 255)
-  @IsString()
-  @IsEmail()
-  email: string;
 
   @IsNotEmpty()
   @IsString()
@@ -48,9 +28,4 @@ export class CreateUserDto {
    *   Minimum eight in length .{8,} (with the anchors)
    */
   password: string;
-
-  @IsString()
-  @IsEnum(RoleBase)
-  @IsNotEmpty()
-  role: RoleBase;
 }

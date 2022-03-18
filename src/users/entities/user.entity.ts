@@ -1,8 +1,9 @@
 import { ObjectId } from 'mongodb';
 import { Column, Entity, ObjectIdColumn } from 'typeorm';
+import { RoleBase } from '../enums/role.enum';
 
 @Entity()
-export class User {
+export class UserEntity {
   @ObjectIdColumn()
   id: ObjectId;
 
@@ -20,4 +21,7 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column()
+  role: RoleBase;
 }
