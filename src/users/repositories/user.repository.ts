@@ -17,7 +17,7 @@ export class UserRepository extends Repository<UserEntity> {
 
   async createUser(createUserDto: CreateUserDto): Promise<any> {
     try {
-      const { firstName, lastName, phone, email, password, role } =
+      const { firstName, lastName, phone, email, password, roles } =
         createUserDto;
 
       const newUser = this.create({
@@ -26,7 +26,6 @@ export class UserRepository extends Repository<UserEntity> {
         phone,
         email,
         password,
-        role,
       });
 
       const isExist = await this.findOne({
@@ -40,6 +39,18 @@ export class UserRepository extends Repository<UserEntity> {
       const salt = await brcypt.genSalt(12);
       const hashedPassword = await brcypt.hash(newUser.password, salt);
       newUser.password = hashedPassword;
+      [newUser.roles] = [roles];
+      newUser.reference =
+        'H' +
+        Date.parse(Date()) +
+        '' +
+        Math.floor(100000 + Math.random() * 900000);
+
+      this.logger.verbose(
+        `"src/users/repositories/user.repository.ts", A Reference number generated! Data ${JSON.stringify(
+          newUser.reference,
+        )}`,
+      );
 
       await this.save(newUser);
 
@@ -49,7 +60,7 @@ export class UserRepository extends Repository<UserEntity> {
         lastName: newUser.lastName,
         phone: newUser.phone,
         email: newUser.email,
-        role: newUser.role,
+        roles: newUser.roles,
       };
 
       this.logger.verbose(
@@ -68,10 +79,26 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
-  async getUsers(skip: number, limit: number): Promise<any> {
+  async getUsers(skip: number, limit: number, user: UserEntity): Promise<any> {
     try {
       skip = skip ? skip : 0;
       limit = limit ? limit : 5;
+
+      this.logger.verbose(
+        `"src/users/repositories/user.repository.ts", Faild to load!`,
+        user,
+      );
+
+      const isAdmin: boolean = user.roles.includes(RoleBase.ADMIN);
+
+      if (!isAdmin) {
+        throw new ForbiddenException('This user has no acess!');
+      }
+
+      this.logger.verbose(
+        `"src/users/repositories/user.repository.ts", User has no access right!`,
+        user,
+      );
 
       const usersList = await this.find({
         skip: skip,

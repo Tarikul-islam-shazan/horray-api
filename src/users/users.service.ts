@@ -17,8 +17,8 @@ export class UsersService {
     return this.userRepository.createUser(createUserDto);
   }
 
-  findAll(skip: number, limit: number) {
-    return this.userRepository.getUsers(skip, limit);
+  findAll(skip: number, limit: number, user: UserEntity) {
+    return this.userRepository.getUsers(skip, limit, user);
   }
 
   findOne(id: ObjectID) {

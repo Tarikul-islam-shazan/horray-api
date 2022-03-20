@@ -32,8 +32,9 @@ export class UsersController {
   findAll(
     @Query('skip', ParseIntPipe) skip: number,
     @Query('limit', ParseIntPipe) limit: number,
+    @User() user: UserEntity,
   ) {
-    return this.usersService.findAll(skip, limit);
+    return this.usersService.findAll(skip, limit, user);
   }
 
   @Get(':id')

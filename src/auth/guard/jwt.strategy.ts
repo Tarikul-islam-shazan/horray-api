@@ -27,14 +27,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    const { id, phone } = payload;
+    const { id, phone, roles } = payload;
     try {
       const user: UserEntity = await this.usersRepository.getUserById(id);
       if (!user) {
         throw new UnauthorizedException('The user is not Authorized!');
       }
 
-      const validUser = { id: id, phone: phone };
+      const validUser = { id: id, phone: phone, roles: roles };
+      this.logger.verbose(
+        `"src/auth/guard/jwt.strategy.ts", Valid user ${JSON.stringify(
+          validUser,
+        )}`,
+      );
       return validUser;
     } catch (error) {
       this.logger.error(

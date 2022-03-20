@@ -24,6 +24,10 @@ export class AuthService {
   async login(loginUserDto: LoginUserDto): Promise<any> {
     try {
       const { phone, password } = loginUserDto;
+      this.logger.verbose(
+        `"src/auth/auth.service.ts", Phone  no.
+        ${JSON.stringify(phone)}`,
+      );
 
       const isPhoneValid: UserEntity = await this.userRepository.findOne({
         phone,
@@ -44,6 +48,7 @@ export class AuthService {
       const jwtPayload = {
         id: isPhoneValid.id,
         phone: isPhoneValid.phone,
+        roles: isPhoneValid.roles,
       };
       const accessToken = await this.jwtService.sign(jwtPayload);
       return accessToken;

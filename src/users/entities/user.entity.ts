@@ -23,5 +23,8 @@ export class UserEntity {
   password: string;
 
   @Column()
-  role: RoleBase;
+  reference: string;
+
+  @Column()
+  roles: RoleBase[];
 }
