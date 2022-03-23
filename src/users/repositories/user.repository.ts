@@ -83,34 +83,31 @@ export class UserRepository extends Repository<UserEntity> {
     try {
       skip = skip ? skip : 0;
       limit = limit ? limit : 5;
-
       this.logger.verbose(
         `"src/users/repositories/user.repository.ts", Faild to load!`,
         user,
       );
-
       const isAdmin: boolean = user.roles.includes(RoleBase.ADMIN);
-
       if (!isAdmin) {
         throw new ForbiddenException('This user has no acess!');
       }
-
       this.logger.verbose(
         `"src/users/repositories/user.repository.ts", User has no access right!`,
         user,
       );
-
       const usersList = await this.find({
         skip: skip,
         take: limit,
       });
-
       return usersList.map((user) => ({
         id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
         phone: user.phone,
         email: user.email,
+        roles: user.roles,
+        reference: user.reference,
+        agent: user.agent,
       }));
     } catch (error) {
       this.logger.error(
@@ -121,29 +118,19 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
-  async getUserById(id: ObjectID): Promise<any> {
+  async getUserById(id: ObjectID): Promise<UserEntity> {
     try {
       const user = await this.findOne(id);
-
       if (!user) {
         throw new NotFoundException('User not found');
       }
-
-      const userInfo = {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        phone: user.phone,
-        email: user.email,
-      };
-
       this.logger.verbose(
         `"src/users/repositories/user.repository.ts", User found - data:${JSON.stringify(
-          userInfo,
+          user,
         )}`,
       );
-
-      return userInfo;
+      delete user.password;
+      return user;
     } catch (error) {
       this.logger.error(
         `"src/users/repositories/user.repository.ts", The user with ID ${JSON.stringify(

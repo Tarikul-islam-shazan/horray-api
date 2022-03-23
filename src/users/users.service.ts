@@ -13,7 +13,7 @@ export class UsersService {
     private userRepository: UserRepository,
   ) {}
 
-  create(createUserDto: CreateUserDto): Promise<any> {
+  create(createUserDto: CreateUserDto) {
     return this.userRepository.createUser(createUserDto);
   }
 

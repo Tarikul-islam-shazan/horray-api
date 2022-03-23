@@ -38,6 +38,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @UseGuards(JwtGuard)
   findOne(@Param('id') id: ObjectID) {
     return this.usersService.findOne(id);
   }

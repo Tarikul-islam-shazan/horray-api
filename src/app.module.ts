@@ -5,6 +5,7 @@ import { HttpModule } from '@nestjs/axios';
 import { configValidation } from './config.schema';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { AgentsModule } from './agents/agents.module';
 
 @Module({
   imports: [
@@ -23,9 +24,10 @@ import { AuthModule } from './auth/auth.module';
         url: configService.get('MONGODB_URL'),
         port: configService.get('MONGODB_PORT'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
       }),
     }),
+    AgentsModule,
   ],
   controllers: [],
   providers: [],
