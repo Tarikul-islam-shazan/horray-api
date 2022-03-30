@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,7 @@ export class AuthService {
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
     private jwtService: JwtService,
+    private config: ConfigService,
   ) {}
 
   async login(loginUserDto: LoginUserDto): Promise<any> {
@@ -28,15 +30,12 @@ export class AuthService {
         `"src/auth/auth.service.ts", Phone  no.
         ${JSON.stringify(phone)}`,
       );
-
       const isPhoneValid: UserEntity = await this.userRepository.findOne({
         phone,
       });
-
       if (!isPhoneValid) {
         throw new NotFoundException('Phone No not found');
       }
-
       const isPasswordValid = await bcrypt.compare(
         password,
         isPhoneValid.password,
@@ -44,14 +43,16 @@ export class AuthService {
       if (!isPasswordValid) {
         throw new NotFoundException('Password not matched');
       }
-
       const jwtPayload = {
         id: isPhoneValid.id,
         phone: isPhoneValid.phone,
         roles: isPhoneValid.roles,
       };
       const accessToken = await this.jwtService.sign(jwtPayload);
-      return accessToken;
+      return {
+        idToken: accessToken,
+        expiresIn: this.config.get('JWT_EXPIRE'),
+      };
     } catch (error) {
       this.logger.error(
         `"src/auth/auth.service.ts", Phone or Password not matched by given phone no.`,

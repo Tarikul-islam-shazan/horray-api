@@ -19,7 +19,6 @@ export class AgentsController {
   constructor(private readonly agentsService: AgentsService) {}
 
   @Post()
-  @UseGuards(JwtGuard)
   create(@Body() createAgentDto: CreateAgentDto) {
     return this.agentsService.create(createAgentDto);
   }

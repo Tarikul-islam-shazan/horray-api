@@ -28,7 +28,6 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(JwtGuard)
   findAll(
     @Query('skip', ParseIntPipe) skip: number,
     @Query('limit', ParseIntPipe) limit: number,

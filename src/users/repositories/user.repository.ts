@@ -41,10 +41,7 @@ export class UserRepository extends Repository<UserEntity> {
       newUser.password = hashedPassword;
       [newUser.roles] = [roles];
       newUser.reference =
-        'H' +
-        Date.parse(Date()) +
-        '' +
-        Math.floor(100000 + Math.random() * 900000);
+        'H' + '' + Math.floor(100000 + Math.random() * 900000);
 
       this.logger.verbose(
         `"src/users/repositories/user.repository.ts", A Reference number generated! Data ${JSON.stringify(
@@ -87,10 +84,10 @@ export class UserRepository extends Repository<UserEntity> {
         `"src/users/repositories/user.repository.ts", Faild to load!`,
         user,
       );
-      const isAdmin: boolean = user.roles.includes(RoleBase.ADMIN);
-      if (!isAdmin) {
-        throw new ForbiddenException('This user has no acess!');
-      }
+      // const isAdmin: boolean = user.roles.includes(RoleBase.ADMIN);
+      // if (!isAdmin) {
+      //   throw new ForbiddenException('This user has no acess!');
+      // }
       this.logger.verbose(
         `"src/users/repositories/user.repository.ts", User has no access right!`,
         user,

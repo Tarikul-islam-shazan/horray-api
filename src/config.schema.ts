@@ -5,4 +5,5 @@ export const configValidation = Joi.object({
   MONGODB_URL: Joi.string().required(),
   MONGODB_PORT: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
+  JWT_EXPIRE: Joi.string().required(),
 });
