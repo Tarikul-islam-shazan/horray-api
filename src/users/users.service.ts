@@ -25,8 +25,8 @@ export class UsersService {
     return this.userRepository.getUserById(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: ObjectID, updateUserDto: UpdateUserDto) {
+    return this.userRepository.updateUser(id, updateUserDto);
   }
 
   remove(id: number) {

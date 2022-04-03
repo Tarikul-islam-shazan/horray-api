@@ -6,6 +6,8 @@ import { configValidation } from './config.schema';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { AgentsModule } from './agents/agents.module';
+import { MarchantModule } from './marchant/marchant.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { AgentsModule } from './agents/agents.module';
       }),
     }),
     AgentsModule,
+    MarchantModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [],

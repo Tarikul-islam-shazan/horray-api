@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   InternalServerErrorException,
   Logger,
   NotFoundException,
@@ -9,7 +8,7 @@ import { EntityRepository, ObjectID, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserEntity } from '../entities/user.entity';
 import * as brcypt from 'bcrypt';
-import { RoleBase } from '../enums/role.enum';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
@@ -58,6 +57,7 @@ export class UserRepository extends Repository<UserEntity> {
         phone: newUser.phone,
         email: newUser.email,
         roles: newUser.roles,
+        reference: newUser.reference,
       };
 
       this.logger.verbose(
@@ -132,6 +132,46 @@ export class UserRepository extends Repository<UserEntity> {
       this.logger.error(
         `"src/users/repositories/user.repository.ts", The user with ID ${JSON.stringify(
           id,
+        )} not found.`,
+      );
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async updateUser(userId: ObjectID, updateUserDto: UpdateUserDto) {
+    try {
+      const user = await this.findOne(userId);
+      if (!user) {
+        throw new NotFoundException('User is not found!');
+      }
+      const { firstName, lastName, email } = updateUserDto;
+      const updatedUser = user;
+      if (firstName) {
+        updatedUser.firstName = firstName;
+      }
+      if (lastName) {
+        updatedUser.lastName = lastName;
+      }
+      if (email) {
+        updatedUser.email = email;
+      }
+      this.save(updatedUser);
+      const updatedUserInfo = {
+        id: updatedUser.id,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email,
+      };
+      this.logger.verbose(
+        `"L:156", "src/users/repositories/users.repository.ts", The user with ID ${userId} is updated! Data: ${JSON.stringify(
+          updatedUserInfo,
+        )}`,
+      );
+      return updatedUserInfo;
+    } catch (error) {
+      this.logger.error(
+        `"src/users/repositories/user.repository.ts", The user with ID ${JSON.stringify(
+          userId,
         )} not found.`,
       );
       throw new InternalServerErrorException();
