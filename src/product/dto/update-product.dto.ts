@@ -1,10 +1,4 @@
-import {
-  IsNotEmpty,
-  IsString,
-  Length,
-  IsDecimal,
-  IsOptional,
-} from 'class-validator';
+import { IsString, Length, IsDecimal, IsOptional } from 'class-validator';
 
 export class UpdateProductDto {
   @IsOptional()

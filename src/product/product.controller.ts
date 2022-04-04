@@ -8,7 +8,6 @@ import {
   Delete,
   UseInterceptors,
   HttpStatus,
-  Req,
   UploadedFile,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
@@ -71,10 +70,10 @@ export class ProductController {
     @Param('id') id: ObjectId,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const createProductDto: CreateProductDto = new CreateProductDto();
+    const updateProductDto: UpdateProductDto = new UpdateProductDto();
     if (file) {
-      createProductDto.imageUrl = file.filename;
-      return this.productService.update(id, createProductDto);
+      updateProductDto.imageUrl = file.filename;
+      return this.productService.update(id, updateProductDto);
     } else {
       return {
         statusCode: HttpStatus.NOT_FOUND,

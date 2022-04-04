@@ -107,8 +107,16 @@ export class MarchantsRepository extends Repository<Marchant> {
       if (!marchant) {
         throw new BadRequestException('Marchant ID not exists!');
       }
-      const { name, address, email, phone, latitude, longitude, discount } =
-        updateMarchantDto;
+      const {
+        name,
+        address,
+        email,
+        phone,
+        imageUrl,
+        latitude,
+        longitude,
+        discount,
+      } = updateMarchantDto;
       const updatedMarchant = marchant;
       if (name) {
         updatedMarchant.name = name;
@@ -121,6 +129,9 @@ export class MarchantsRepository extends Repository<Marchant> {
       }
       if (phone) {
         updatedMarchant.phone = phone;
+      }
+      if (imageUrl) {
+        updatedMarchant.imageUrl = imageUrl;
       }
       if (latitude) {
         updatedMarchant.latitude = latitude;

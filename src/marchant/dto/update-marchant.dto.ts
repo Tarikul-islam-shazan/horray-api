@@ -31,6 +31,10 @@ export class UpdateMarchantDto {
   phone?: string;
 
   @IsOptional()
+  @IsString()
+  imageUrl?: string;
+
+  @IsOptional()
   @IsNotEmpty()
   @IsNumber()
   latitude?: number;

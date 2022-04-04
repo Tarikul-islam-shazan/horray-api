@@ -5,7 +5,6 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsRepository } from './repositories/products.repository';
-import { MarchantService } from 'src/marchant/marchant.service';
 import { MarchantsRepository } from 'src/marchant/repositories/marchant.repository';
 
 @Module({

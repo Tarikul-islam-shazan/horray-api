@@ -2,7 +2,6 @@ import {
   BadRequestException,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 import { EntityRepository, Repository } from 'typeorm';
