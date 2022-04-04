@@ -1,8 +1,9 @@
 import { ObjectId } from 'mongodb';
-import { Column, Entity, ObjectIdColumn } from 'typeorm';
+import { Product } from 'src/product/entities/product.entity';
+import { Column, Entity, ObjectIdColumn, OneToMany } from 'typeorm';
 
 @Entity()
-export class MarchantEntity {
+export class Marchant {
   @ObjectIdColumn()
   id: ObjectId;
 
@@ -32,4 +33,7 @@ export class MarchantEntity {
 
   @Column()
   discount: number;
+
+  @OneToMany(() => Product, (product) => product.marchant)
+  product: Product[];
 }

@@ -7,10 +7,10 @@ import { ObjectId } from 'mongodb';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateMarchantDto } from '../dto/create-marchant.dto';
 import { UpdateMarchantDto } from '../dto/update-marchant.dto';
-import { MarchantEntity } from '../entities/marchant.entity';
+import { Marchant } from '../entities/marchant.entity';
 
-@EntityRepository(MarchantEntity)
-export class MarchantsRepository extends Repository<MarchantEntity> {
+@EntityRepository(Marchant)
+export class MarchantsRepository extends Repository<Marchant> {
   logger = new Logger('Marchant Repository');
 
   async createMarchant(createMarchantDto: CreateMarchantDto): Promise<any> {
@@ -64,7 +64,7 @@ export class MarchantsRepository extends Repository<MarchantEntity> {
     }
   }
 
-  async getAllMarchant(skip: number, limit: number): Promise<MarchantEntity[]> {
+  async getAllMarchant(skip: number, limit: number): Promise<Marchant[]> {
     try {
       skip = skip ? skip : 0;
       limit = limit ? limit : 5;
@@ -82,7 +82,7 @@ export class MarchantsRepository extends Repository<MarchantEntity> {
     }
   }
 
-  async getMarchantById(id: ObjectId): Promise<MarchantEntity> {
+  async getMarchantById(id: ObjectId): Promise<Marchant> {
     try {
       const marchant = await this.findOne(id);
       if (!marchant) {
@@ -101,7 +101,7 @@ export class MarchantsRepository extends Repository<MarchantEntity> {
   async updateMarchant(
     id: ObjectId,
     updateMarchantDto: UpdateMarchantDto,
-  ): Promise<MarchantEntity> {
+  ): Promise<Marchant> {
     try {
       const marchant = await this.findOne(id);
       if (!marchant) {
