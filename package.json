@@ -1,8 +1,12 @@
 {
   "name": "horray-api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Horray application project.Awesome e-commerce project with invoative idea integration.",
+  "author": "KM TARIKUL ISLAM",
+  "engines": {
+    "node": "16.14.0",
+    "npm": "8.3.x"
+  },
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

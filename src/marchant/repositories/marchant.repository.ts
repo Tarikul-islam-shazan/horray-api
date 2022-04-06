@@ -26,11 +26,17 @@ export class MarchantsRepository extends Repository<Marchant> {
         longitude,
         discount,
       });
+      const isNameExist = await this.findOne({
+        name: newMarchant.name,
+      });
+      if (isNameExist) {
+        throw new BadRequestException('Marchant has already exist!');
+      }
       const isExist = await this.findOne({
         phone: newMarchant.phone,
       });
       if (isExist) {
-        throw new BadRequestException('Marchant has already exist!');
+        throw new BadRequestException('Phone no has already exist!');
       }
       const isEmailExist = await this.findOne({
         email: newMarchant.email,

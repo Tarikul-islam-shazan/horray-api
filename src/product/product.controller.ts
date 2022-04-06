@@ -43,6 +43,11 @@ export class ProductController {
     return this.productService.findOne(id);
   }
 
+  @Get('/marchant/:name')
+  findOneByMarchant(@Param('name') name: string) {
+    return this.productService.findOneByMarchant(name);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: ObjectId,

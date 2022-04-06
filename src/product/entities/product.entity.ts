@@ -22,6 +22,6 @@ export class Product {
   @Column({ default: true })
   isPublished: boolean;
 
-  @ManyToOne(() => Marchant, (marchant) => marchant.product)
+  @Column(() => Marchant)
   marchant: Marchant;
 }

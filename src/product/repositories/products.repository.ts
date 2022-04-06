@@ -3,8 +3,10 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
+import { equal } from 'assert';
+import { object } from 'joi';
 import { ObjectId } from 'mongodb';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, ObjectID, Repository } from 'typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 
@@ -48,20 +50,44 @@ export class ProductsRepository extends Repository<Product> {
     }
   }
 
-  async updateProduct(
-    id: ObjectId,
-    updateProductDto: UpdateProductDto,
-  ): Promise<Product> {
+  async getProductByMarchantId(marchantName: string): Promise<Product[]> {
     try {
-      const product = await this.findOne(id);
+      const product = await this.find({
+        where: {
+          'marchant.name': { $eq: marchantName },
+        },
+      });
+      this.logger.verbose(
+        `"src/product/repositories/products.repository.ts", Product !`,
+        product,
+      );
       if (!product) {
         throw new BadRequestException('Product ID not exists!');
       }
-      const { productName, price, imageUrl } = updateProductDto;
-      if (productName) product.productName = productName;
-      if (price) product.price = price;
-      if (imageUrl) product.imageUrl = imageUrl;
-      await this.save(product);
+      return product;
+    } catch (error) {
+      this.logger.error(
+        `"src/product/repositories/products.repository.ts", Product has not been found!`,
+        error.stack,
+      );
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async updateProduct(
+    prodId: ObjectId,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product> {
+    try {
+      const product = await this.findOne(prodId);
+      if (!product) {
+        throw new BadRequestException('Product ID not exists!');
+      }
+      // const { productName, price, imageUrl } = updateProductDto;
+      // if (productName) product.productName = productName;
+      // if (price) product.price = price;
+      // if (imageUrl) product.imageUrl = imageUrl;
+      await this.update(prodId, updateProductDto);
       return product;
     } catch (error) {
       this.logger.error(

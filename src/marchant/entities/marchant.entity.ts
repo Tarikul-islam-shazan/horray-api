@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { Product } from 'src/product/entities/product.entity';
-import { Column, Entity, ObjectIdColumn, OneToMany } from 'typeorm';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
 @Entity()
 export class Marchant {
@@ -34,6 +34,10 @@ export class Marchant {
   @Column()
   discount: number;
 
-  @OneToMany(() => Product, (product) => product.marchant)
-  product: Product[];
+  constructor(id: ObjectId, name: string, address: string, phone: string) {
+    this.id = id;
+    this.name = name;
+    this.address = address;
+    this.phone = phone;
+  }
 }
