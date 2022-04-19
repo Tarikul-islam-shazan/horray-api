@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { Marchant } from 'src/marchant/entities/marchant.entity';
-import { Column, Entity, ManyToOne, ObjectIdColumn } from 'typeorm';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
 @Entity()
 export class Product {

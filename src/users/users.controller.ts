@@ -15,8 +15,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectID } from 'typeorm';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
-import { User } from './decorators/user.decorator';
-import { UserEntity } from './entities/user.entity';
+import { UserDecorator } from './decorators/user.decorator';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -31,7 +31,7 @@ export class UsersController {
   findAll(
     @Query('skip', ParseIntPipe) skip: number,
     @Query('limit', ParseIntPipe) limit: number,
-    @User() user: UserEntity,
+    @UserDecorator() user: User,
   ) {
     return this.usersService.findAll(skip, limit, user);
   }

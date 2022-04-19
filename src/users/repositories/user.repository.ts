@@ -6,12 +6,12 @@ import {
 } from '@nestjs/common';
 import { EntityRepository, ObjectID, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { UserEntity } from '../entities/user.entity';
+import { User } from '../entities/user.entity';
 import * as brcypt from 'bcrypt';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
-@EntityRepository(UserEntity)
-export class UserRepository extends Repository<UserEntity> {
+@EntityRepository(User)
+export class UserRepository extends Repository<User> {
   logger = new Logger('User Repository');
 
   async createUser(createUserDto: CreateUserDto): Promise<any> {
@@ -76,7 +76,7 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
-  async getUsers(skip: number, limit: number, user: UserEntity): Promise<any> {
+  async getUsers(skip: number, limit: number, user: User): Promise<any> {
     try {
       skip = skip ? skip : 0;
       limit = limit ? limit : 5;
@@ -115,7 +115,7 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
-  async getUserById(id: ObjectID): Promise<UserEntity> {
+  async getUserById(id: ObjectID): Promise<User> {
     try {
       const user = await this.findOne(id);
       if (!user) {

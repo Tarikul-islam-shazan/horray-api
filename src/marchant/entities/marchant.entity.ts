@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongodb';
-import { Product } from 'src/product/entities/product.entity';
 import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
 @Entity()

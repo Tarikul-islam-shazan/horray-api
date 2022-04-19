@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectID } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserEntity } from './entities/user.entity';
+import { User } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class UsersService {
     return this.userRepository.createUser(createUserDto);
   }
 
-  findAll(skip: number, limit: number, user: UserEntity) {
+  findAll(skip: number, limit: number, user: User) {
     return this.userRepository.getUsers(skip, limit, user);
   }
 

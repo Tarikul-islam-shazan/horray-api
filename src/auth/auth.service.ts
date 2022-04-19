@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { LoginUserDto } from './dto/login-user.dto';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { User } from 'src/users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -30,7 +30,7 @@ export class AuthService {
         `"src/auth/auth.service.ts", Phone  no.
         ${JSON.stringify(phone)}`,
       );
-      const isPhoneValid: UserEntity = await this.userRepository.findOne({
+      const isPhoneValid: User = await this.userRepository.findOne({
         phone,
       });
       if (!isPhoneValid) {

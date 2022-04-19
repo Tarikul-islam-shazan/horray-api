@@ -3,10 +3,8 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { equal } from 'assert';
-import { object } from 'joi';
 import { ObjectId } from 'mongodb';
-import { EntityRepository, ObjectID, Repository } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 
@@ -83,10 +81,6 @@ export class ProductsRepository extends Repository<Product> {
       if (!product) {
         throw new BadRequestException('Product ID not exists!');
       }
-      // const { productName, price, imageUrl } = updateProductDto;
-      // if (productName) product.productName = productName;
-      // if (price) product.price = price;
-      // if (imageUrl) product.imageUrl = imageUrl;
       await this.update(prodId, updateProductDto);
       return product;
     } catch (error) {

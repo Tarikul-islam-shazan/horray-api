@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { User } from 'src/users/entities/user.entity';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { JwtPayload } from '../interfaces/jwtPayload';
 
@@ -29,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtPayload) {
     const { id, phone, roles } = payload;
     try {
-      const user: UserEntity = await this.usersRepository.getUserById(id);
+      const user: User = await this.usersRepository.getUserById(id);
       if (!user) {
         throw new UnauthorizedException('The user is not Authorized!');
       }

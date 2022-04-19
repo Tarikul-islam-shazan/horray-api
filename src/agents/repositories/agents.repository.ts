@@ -8,10 +8,10 @@ import { ObjectId } from 'mongodb';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateAgentDto } from '../dto/create-agent.dto';
 import { UpdateAgentMemberDto } from '../dto/update-agent-member.dto';
-import { AgentEntity } from '../entities/agent.entity';
+import { Agent } from '../entities/agent.entity';
 
-@EntityRepository(AgentEntity)
-export class AgentsRepository extends Repository<AgentEntity> {
+@EntityRepository(Agent)
+export class AgentsRepository extends Repository<Agent> {
   logger = new Logger('Agent Repository');
 
   async createAgent(createAgent: CreateAgentDto): Promise<any> {
@@ -69,7 +69,7 @@ export class AgentsRepository extends Repository<AgentEntity> {
     }
   }
 
-  async getAgentInfo(ref: string): Promise<AgentEntity> {
+  async getAgentInfo(ref: string): Promise<Agent> {
     try {
       const agent = await this.findOne({ agentRefrence: ref });
       if (!agent) {

@@ -5,11 +5,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectId } from 'mongodb';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { User } from 'src/users/entities/user.entity';
 import { UserRepository } from 'src/users/repositories/user.repository';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentMemberDto } from './dto/update-agent-member.dto';
-import { AgentEntity } from './entities/agent.entity';
+import { Agent } from './entities/agent.entity';
 import { AgentsRepository } from './repositories/agents.repository';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class AgentsService {
     private userRepository: UserRepository,
   ) {}
 
-  async create(createAgentDto: CreateAgentDto): Promise<UserEntity> {
+  async create(createAgentDto: CreateAgentDto): Promise<User> {
     try {
       const { agentRefrence } = createAgentDto;
       const validUser = await this.userRepository.findOne({
@@ -32,7 +32,7 @@ export class AgentsService {
           'User not found with this reference number.',
         );
       }
-      const agent: AgentEntity = await this.agentRepository.createAgent(
+      const agent: Agent = await this.agentRepository.createAgent(
         createAgentDto,
       );
       validUser.agent = agent;

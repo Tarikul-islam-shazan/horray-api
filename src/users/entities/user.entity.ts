@@ -1,10 +1,10 @@
 import { ObjectId } from 'mongodb';
-import { AgentEntity } from 'src/agents/entities/agent.entity';
-import { Column, Entity, JoinColumn, ObjectIdColumn, OneToOne } from 'typeorm';
+import { Agent } from 'src/agents/entities/agent.entity';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 import { RoleBase } from '../enums/role.enum';
 
 @Entity()
-export class UserEntity {
+export class User {
   @ObjectIdColumn()
   id: ObjectId;
 
@@ -29,7 +29,6 @@ export class UserEntity {
   @Column()
   roles: RoleBase[];
 
-  @OneToOne(() => AgentEntity)
-  @JoinColumn()
-  agent: AgentEntity;
+  @Column(() => Agent)
+  agent: Agent;
 }
