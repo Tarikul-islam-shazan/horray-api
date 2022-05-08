@@ -23,7 +23,7 @@ export class AgentsService {
 
   async create(createAgentDto: CreateAgentDto): Promise<User> {
     try {
-      const { agentRefrence } = createAgentDto;
+      const { agentRefrence, point, members } = createAgentDto;
       const validUser = await this.userRepository.findOne({
         reference: agentRefrence,
       });
@@ -32,11 +32,12 @@ export class AgentsService {
           'User not found with this reference number.',
         );
       }
-      const agent: Agent = await this.agentRepository.createAgent(
+      const createdagent = await this.agentRepository.createAgent(
         createAgentDto,
       );
-      validUser.agent = agent;
-      this.userRepository.save(validUser);
+      const agent = new Agent(agentRefrence, point, members);
+      agent.id = createdagent.id;
+      this.userRepository.update(validUser.id, { agent: agent });
       delete validUser.password;
       return validUser;
     } catch (error) {
@@ -52,8 +53,12 @@ export class AgentsService {
     return this.agentRepository.getAgentInfo(refrence);
   }
 
-  update(id: ObjectId, updateAgentMemberDto: UpdateAgentMemberDto) {
-    return this.agentRepository.updateAgentMemeber(id, updateAgentMemberDto);
+  update(id: ObjectId, updateAgentMemberDto: UpdateAgentMemberDto, user: User) {
+    return this.agentRepository.updateAgentMemeber(
+      id,
+      updateAgentMemberDto,
+      user,
+    );
   }
 
   remove(id: number) {

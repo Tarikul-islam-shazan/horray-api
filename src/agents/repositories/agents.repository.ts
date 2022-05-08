@@ -1,10 +1,13 @@
 import {
   BadRequestException,
+  ForbiddenException,
   InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
+import { User } from 'src/users/entities/user.entity';
+import { RoleBase } from 'src/users/enums/role.enum';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateAgentDto } from '../dto/create-agent.dto';
 import { UpdateAgentMemberDto } from '../dto/update-agent-member.dto';
@@ -45,8 +48,13 @@ export class AgentsRepository extends Repository<Agent> {
   async updateAgentMemeber(
     id: ObjectId,
     updateAgentMemberDto: UpdateAgentMemberDto,
+    user: User,
   ) {
     try {
+      const isAgent: boolean = user.roles.includes(RoleBase.AGENT);
+      if (!isAgent) {
+        throw new ForbiddenException('This user has no acess!');
+      }
       const { memberRefrence } = updateAgentMemberDto;
       const validAgent = await this.findOne(id);
       if (!validAgent) {

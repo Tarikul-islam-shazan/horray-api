@@ -10,6 +10,8 @@ import {
 } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { UserDecorator } from 'src/users/decorators/user.decorator';
+import { User } from 'src/users/entities/user.entity';
 import { AgentsService } from './agents.service';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentMemberDto } from './dto/update-agent-member.dto';
@@ -39,8 +41,9 @@ export class AgentsController {
   update(
     @Param('id') id: ObjectId,
     @Body() updateAgentDto: UpdateAgentMemberDto,
+    @UserDecorator() user: User,
   ) {
-    return this.agentsService.update(id, updateAgentDto);
+    return this.agentsService.update(id, updateAgentDto, user);
   }
 
   @Delete(':id')
