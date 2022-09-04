@@ -2,6 +2,11 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import {
+  DocumentBuilder,
+  SwaggerDocumentOptions,
+  SwaggerModule,
+} from '@nestjs/swagger';
 
 async function bootstrap() {
   try {
@@ -12,6 +17,18 @@ async function bootstrap() {
     const logger = new Logger();
 
     app.useGlobalPipes(new ValidationPipe());
+
+    const config = new DocumentBuilder()
+    .setTitle('Hooray E-commerce API')
+    .setDescription('Hooray E-commerce API')
+    .setVersion('1.0')
+    .addTag('hooray')
+    .addBearerAuth()
+    .build();
+
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, document);
+
 
     await app.listen(port);
 

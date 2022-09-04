@@ -15,9 +15,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectID } from 'typeorm';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserDecorator } from './decorators/user.decorator';
 import { User } from './entities/user.entity';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -37,12 +39,14 @@ export class UsersController {
   }
 
   @Get(':id')
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   findOne(@Param('id') id: ObjectID) {
     return this.usersService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   update(@Param('id') id: ObjectID, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
