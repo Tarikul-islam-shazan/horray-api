@@ -20,7 +20,9 @@ import {
   imageFileFilter,
 } from 'src/common/utils/file-upload.utils';
 import { ObjectId } from 'mongodb';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('ProductController')
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
