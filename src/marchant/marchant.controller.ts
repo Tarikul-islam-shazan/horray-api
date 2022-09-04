@@ -22,7 +22,9 @@ import {
   editImageFileName,
   imageFileFilter,
 } from 'src/common/utils/file-upload.utils';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('marchant')
 @Controller('marchant')
 export class MarchantController {
   constructor(private readonly marchantService: MarchantService) {}

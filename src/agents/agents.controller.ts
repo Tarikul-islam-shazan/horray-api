@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ObjectId } from 'mongodb';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { UserDecorator } from 'src/users/decorators/user.decorator';
@@ -16,6 +17,7 @@ import { AgentsService } from './agents.service';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentMemberDto } from './dto/update-agent-member.dto';
 
+@ApiTags('agents')
 @Controller('agents')
 export class AgentsController {
   constructor(private readonly agentsService: AgentsService) {}
@@ -30,12 +32,14 @@ export class AgentsController {
     return this.agentsService.findAll();
   }
 
+  @ApiBearerAuth()
   @Get(':ref')
   @UseGuards(JwtGuard)
   findOne(@Param('ref') ref: string) {
     return this.agentsService.findOne(ref);
   }
 
+  @ApiBearerAuth()
   @Patch(':id')
   @UseGuards(JwtGuard)
   update(

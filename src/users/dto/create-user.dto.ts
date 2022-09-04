@@ -10,8 +10,9 @@ import {
   Length,
   Matches,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, ApiQuery } from '@nestjs/swagger';
 import { RoleBase } from '../enums/role.enum';
+import { Query } from '@nestjs/common';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -33,7 +34,7 @@ export class CreateUserDto {
   @IsPhoneNumber('BD')
   phone: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @Length(5, 255)
   @IsString()
@@ -56,7 +57,7 @@ export class CreateUserDto {
    */
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({ enum: RoleBase})
   @IsEnum(RoleBase, { each: true })
   @IsArray()
   @IsNotEmpty()
