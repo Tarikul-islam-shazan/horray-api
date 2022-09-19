@@ -6,4 +6,7 @@ export const configValidation = Joi.object({
   MONGODB_PORT: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
   JWT_EXPIRE: Joi.string().required(),
+  AWS_S3_ACCESS_KEY_ID: Joi.string().required(),
+  AWS_S3_SECRET_ACCESS_KEY: Joi.string().required(),
+  AWS_BUCKET_NAME: Joi.string().required(),
 });

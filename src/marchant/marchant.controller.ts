@@ -23,11 +23,15 @@ import {
   imageFileFilter,
 } from 'src/common/utils/file-upload.utils';
 import { ApiTags } from '@nestjs/swagger';
+import { FileUploadService } from 'src/common/services/s3-file-upload.service';
 
 @ApiTags('marchant')
 @Controller('marchant')
 export class MarchantController {
-  constructor(private readonly marchantService: MarchantService) {}
+  constructor(
+    private readonly marchantService: MarchantService,
+    private readonly fileUploadService: FileUploadService
+  ) {}
 
   @Post()
   create(@Body() createMarchantDto: CreateMarchantDto) {
@@ -62,21 +66,20 @@ export class MarchantController {
 
   @Post('upload/:id')
   @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads/marchants',
-        filename: editImageFileName,
-      }),
-      fileFilter: imageFileFilter,
-    }),
+    FileInterceptor('file', 
+      {
+        fileFilter: imageFileFilter,
+      }
+    ),
   )
-  uploadFile(
+  async uploadFile(
     @Param('id') id: ObjectId,
     @UploadedFile() file: Express.Multer.File,
   ) {
     const updateProductDto: UpdateMarchantDto = new UpdateMarchantDto();
     if (file) {
-      updateProductDto.imageUrl = file.filename;
+      const data = await this.fileUploadService.upload(file);
+      updateProductDto.imageUrl = data["Location"];
       return this.marchantService.update(id, updateProductDto);
     } else {
       return {

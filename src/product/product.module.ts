@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsRepository } from './repositories/products.repository';
 import { MarchantsRepository } from 'src/marchant/repositories/marchant.repository';
+import { FileUploadService } from 'src/common/services/s3-file-upload.service';
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { MarchantsRepository } from 'src/marchant/repositories/marchant.reposito
     }),
   ],
   controllers: [ProductController],
-  providers: [ProductService],
+  providers: [ProductService, FileUploadService, ConfigService],
 })
 export class ProductModule {}
